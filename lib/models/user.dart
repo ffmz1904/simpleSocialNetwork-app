@@ -10,4 +10,11 @@ class User {
     this.image,
     this.friends,
   });
+
+  User.fromMap(user) {
+    this.email = user["email"];
+    this.name = user["name"];
+    this.image = user["img"];
+    this.friends = user["friends"];
+  }
 }
