@@ -34,35 +34,39 @@ class _AuthScreenState extends State<AuthScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: ListView(children: [
-        Container(
-          height: MediaQuery.of(context).size.height,
-          padding: EdgeInsets.only(top: 30, bottom: 20),
-          color: Colors.red,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              IconButton(
-                icon: Icon(Icons.arrow_back),
-                onPressed: () => Navigator.pushNamed(context, "/"),
-                color: Theme.of(context).accentColor,
-              ),
-              isLogin ? _loginForm() : _registerForm(),
-              Center(
-                child: TextButton(
-                  onPressed: setIsLogin,
-                  child: isLogin
-                      ? Text(
-                          "No acount? Register!",
-                        )
-                      : Text("Already have an account? Sign in!"),
+      body: GestureDetector(
+        onTap: () {
+          FocusScope.of(context).requestFocus(new FocusNode());
+        },
+        child: ListView(children: [
+          Container(
+            height: MediaQuery.of(context).size.height,
+            padding: EdgeInsets.only(top: 30, bottom: 20),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                IconButton(
+                  icon: Icon(Icons.arrow_back),
+                  onPressed: () => Navigator.pushNamed(context, "/"),
+                  color: Theme.of(context).accentColor,
                 ),
-              ),
-            ],
+                isLogin ? _loginForm() : _registerForm(),
+                Center(
+                  child: TextButton(
+                    onPressed: setIsLogin,
+                    child: isLogin
+                        ? Text(
+                            "No acount? Register!",
+                          )
+                        : Text("Already have an account? Sign in!"),
+                  ),
+                ),
+              ],
+            ),
           ),
-        ),
-      ]),
+        ]),
+      ),
     );
   }
 
