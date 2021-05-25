@@ -33,6 +33,7 @@ dependencies:
   redux_thunk: ^0.4.0
   http: ^0.13.3
   font_awesome_flutter: ^9.0.0
+  shared_preferences: ^2.0.5
 
 dev_dependencies:
   flutter_test:

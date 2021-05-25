@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
+import 'package:ssn/helpers/token_handler.dart';
 
 enum RequestMethod {
   GET,
@@ -29,22 +30,28 @@ class Api {
   Future request() async {
     var uri = Uri.parse(this.serverUri + this.endpoint);
     var response;
+    String token = await TokenHandler.getToken();
 
     switch (method) {
       case RequestMethod.GET:
-        response = await http.get(uri);
+        response =
+            await http.get(uri, headers: {'Authorization': 'Bearer $token'});
         break;
       case RequestMethod.POST:
-        response = await http.post(uri, body: this.body);
+        response = await http.post(uri,
+            body: this.body, headers: {'Authorization': 'Bearer $token'});
         break;
       case RequestMethod.PUT:
-        response = await http.put(uri, body: this.body);
+        response = await http.put(uri,
+            body: this.body, headers: {'Authorization': 'Bearer $token'});
         break;
       case RequestMethod.PATCH:
-        response = await http.patch(uri, body: this.body);
+        response = await http.patch(uri,
+            body: this.body, headers: {'Authorization': 'Bearer $token'});
         break;
       case RequestMethod.DELETE:
-        response = await http.delete(uri);
+        response =
+            await http.delete(uri, headers: {'Authorization': 'Bearer $token'});
         break;
     }
 

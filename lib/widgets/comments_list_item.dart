@@ -8,7 +8,6 @@ class CommentListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print(comment.userData.image);
     return Card(
       elevation: 4,
       child: Container(

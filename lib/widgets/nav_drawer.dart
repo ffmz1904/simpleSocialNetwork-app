@@ -3,6 +3,7 @@ import 'package:flutter_redux/flutter_redux.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:ssn/actions/user_actions.dart';
 import 'package:ssn/app_state.dart';
+import 'package:ssn/helpers/token_handler.dart';
 
 class NavDrawer extends StatelessWidget {
   @override
@@ -50,7 +51,10 @@ class NavDrawer extends StatelessWidget {
         ),
         StoreConnector<AppState, VoidCallback>(
           converter: (store) {
-            return () => store.dispatch(RemoveUserData());
+            return () {
+              TokenHandler.removeToken();
+              store.dispatch(RemoveUserData());
+            };
           },
           builder: (context, callback) {
             return ListTile(

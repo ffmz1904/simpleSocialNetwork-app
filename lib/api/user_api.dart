@@ -22,6 +22,11 @@ class UserApi {
     return response;
   }
 
+  static Future checkAuth() async {
+    Map response = await Api.get(endpoint: apiBaseUri + 'auth').request();
+    return response;
+  }
+
   static Future getUserDataById(id) async {
     Map response = await Api.get(endpoint: apiBaseUri + id).request();
     return response;
