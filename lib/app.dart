@@ -6,6 +6,7 @@ import 'package:ssn/app_state.dart';
 import 'package:ssn/helpers/token_handler.dart';
 import 'package:ssn/screens/auth_screen.dart';
 import 'package:ssn/screens/comments_screen.dart';
+import 'package:ssn/screens/create_post_screen.dart';
 import 'package:ssn/screens/home_screen.dart';
 import 'package:ssn/screens/post_screen.dart';
 import 'package:ssn/screens/profile_screen.dart';
@@ -32,6 +33,7 @@ class App extends StatelessWidget {
           "/setting": (context) => SettingScreen(),
           "/post": (context) => PostScreen(),
           "/comments": (context) => CommentsScreen(),
+          "/create_post": (context) => CreatePostScreen(),
         },
       ),
     );

@@ -9,11 +9,23 @@ class SetAllPosts {
   SetAllPosts({this.posts});
 }
 
+class CreatePost {
+  Post post;
+  CreatePost({this.post});
+}
+
 ThunkAction<AppState> getAllPosts() {
   return (Store<AppState> store) async {
     final response = await PostApi.getAll();
     List<Post> posts =
         List.from(response["posts"]).map((post) => Post.fromMap(post)).toList();
     store.dispatch(SetAllPosts(posts: posts));
+  };
+}
+
+ThunkAction<AppState> createPostAction(title, body) {
+  return (Store<AppState> store) async {
+    final response = await PostApi.createPost(title, body);
+    store.dispatch(CreatePost(post: Post.fromMap(response["post"])));
   };
 }

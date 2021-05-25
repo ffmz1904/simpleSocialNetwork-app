@@ -3,7 +3,7 @@ import 'package:ssn/models/post.dart';
 import 'package:ssn/widgets/post_list_item.dart';
 
 class PostsList extends StatelessWidget {
-  List<Post> posts;
+  final List<Post> posts;
 
   PostsList({this.posts});
 

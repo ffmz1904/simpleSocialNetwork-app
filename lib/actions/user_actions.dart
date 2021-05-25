@@ -4,6 +4,7 @@ import 'package:redux_thunk/redux_thunk.dart';
 import 'package:ssn/api/user_api.dart';
 import 'package:ssn/app_state.dart';
 import 'package:ssn/helpers/token_handler.dart';
+import 'package:ssn/models/user.dart';
 
 class SetUserData {
   Map data;
@@ -20,8 +21,8 @@ ThunkAction<AppState> userLogin(email, password, context) {
 
     TokenHandler.setToken(response['token']);
 
-    store.dispatch(
-        SetUserData(data: {"user": response['user'], "isAuth": true}));
+    store.dispatch(SetUserData(
+        data: {"user": User.fromMap(response['user']), "isAuth": true}));
     Navigator.pushNamed(context, "/");
   };
 }
@@ -32,8 +33,8 @@ ThunkAction<AppState> checkAuthAction() {
 
     if (response['success']) {
       TokenHandler.setToken(response['token']);
-      return store.dispatch(
-          SetUserData(data: {"user": response['user'], "isAuth": true}));
+      return store.dispatch(SetUserData(
+          data: {"user": User.fromMap(response['user']), "isAuth": true}));
     }
 
     return store.dispatch(RemoveUserData);

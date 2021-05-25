@@ -18,7 +18,8 @@ class Post {
     this.title = post["title"];
     this.body = post["body"];
     this.comments = post["comments"];
-    this.commentsData = post["commentsData"];
+    this.commentsData =
+        post["comments"].length == 0 ? [] : post["commentsData"];
     this.createdAt = DateTime.parse(post["createdAt"]);
     this.updatedAt = DateTime.parse(post["updatedAt"]);
   }
