@@ -33,7 +33,7 @@ class _PostScreenState extends State<PostScreen> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text("by " + post.userData["name"]),
+                      Text("by " + post.userData.name),
                       Text(
                         '${post.updatedAt.day}.${post.updatedAt.month}.${post.updatedAt.year}',
                         textAlign: TextAlign.end,

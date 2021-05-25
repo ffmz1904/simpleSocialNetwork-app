@@ -8,17 +8,39 @@ class CommentListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print(comment.userData.image);
     return Card(
       elevation: 4,
-      child: Padding(
-        padding: EdgeInsets.all(10),
-        child: Row(
-          children: [
-            Text(comment.userData.name),
-            Text(comment.body),
-          ],
-        ),
-      ),
+      child: Container(
+          padding: EdgeInsets.all(10),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Row(
+                children: [
+                  Container(
+                    margin: EdgeInsets.only(right: 10),
+                    child: CircleAvatar(
+                      backgroundImage: NetworkImage(
+                        'http://10.0.2.2:4000/' + comment.userData.image,
+                      ),
+                    ),
+                  ),
+                  Text(
+                    comment.userData.name,
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                ],
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 5, left: 50),
+                child: Text(
+                  comment.body,
+                  textAlign: TextAlign.start,
+                ),
+              ),
+            ],
+          )),
     );
   }
 }

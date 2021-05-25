@@ -1,7 +1,9 @@
+import 'package:ssn/models/user.dart';
+
 class Post {
   String id;
   String userId;
-  Map userData;
+  User userData;
   String title;
   String body;
   List comments;
@@ -12,7 +14,7 @@ class Post {
   Post.fromMap(post) {
     this.id = post["_id"];
     this.userId = post["userId"];
-    this.userData = post["userData"];
+    this.userData = User.fromMap(post["userData"]);
     this.title = post["title"];
     this.body = post["body"];
     this.comments = post["comments"];
