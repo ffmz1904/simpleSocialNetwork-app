@@ -1,17 +1,10 @@
 import 'package:ssn/api/api.dart';
-import 'package:ssn/models/post.dart';
 
 class PostApi {
+  static String apiBaseUri = 'api/post/';
+
   static Future getAll() async {
-    Map response = await Api.get(endpoint: 'api/post').request();
-
-    if (!response["success"]) {
-      // todo error
-    }
-
-    List posts =
-        List.from(response["posts"]).map((post) => Post.fromMap(post)).toList();
-
-    return {"success": true, "posts": posts};
+    Map response = await Api.get(endpoint: apiBaseUri).request();
+    return response;
   }
 }

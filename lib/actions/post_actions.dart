@@ -12,6 +12,8 @@ class SetAllPosts {
 ThunkAction<AppState> getAllPosts() {
   return (Store<AppState> store) async {
     final response = await PostApi.getAll();
-    store.dispatch(SetAllPosts(posts: response["posts"]));
+    List<Post> posts =
+        List.from(response["posts"]).map((post) => Post.fromMap(post)).toList();
+    store.dispatch(SetAllPosts(posts: posts));
   };
 }
