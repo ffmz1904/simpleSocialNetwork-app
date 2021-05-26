@@ -5,6 +5,7 @@ import 'package:ssn/actions/people_actions.dart';
 import 'package:ssn/app_state.dart';
 import 'package:ssn/models/user.dart';
 import 'package:ssn/widgets/nav_drawer.dart';
+import 'package:ssn/widgets/people_list.dart';
 
 class PeopleScreen extends StatelessWidget {
   final Function getAllPeople = getAllPeopleAction();
@@ -21,8 +22,7 @@ class PeopleScreen extends StatelessWidget {
       body: StoreConnector<AppState, List<User>>(
         converter: (store) => store.state.people,
         builder: (context, people) {
-          print(people);
-          return Text('people');
+          return PeopleList(people: people);
         },
       ),
     );
