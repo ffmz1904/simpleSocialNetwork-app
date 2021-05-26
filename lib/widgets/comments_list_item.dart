@@ -46,10 +46,10 @@ class CommentListItem extends StatelessWidget {
                       ),
                     ),
                   ),
-                  StoreConnector<AppState, User>(
-                    converter: (store) => store.state.user['data'],
+                  StoreConnector<AppState, Map<String, dynamic>>(
+                    converter: (store) => store.state.user,
                     builder: (context, user) {
-                      if (user.id == comment.userId) {
+                      if (user['isAuth'] && user['data'].id == comment.userId) {
                         return Container(
                           width: 30,
                           height: 20,
@@ -59,7 +59,6 @@ class CommentListItem extends StatelessWidget {
                               onPressed: () => removeComment(context)),
                         );
                       }
-
                       return SizedBox();
                     },
                   ),
