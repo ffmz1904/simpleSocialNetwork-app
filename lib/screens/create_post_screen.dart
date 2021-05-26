@@ -15,7 +15,6 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
   TextEditingController _body = TextEditingController();
 
   Future createPost(context) async {
-    print('ok');
     Store<AppState> store = StoreProvider.of(context);
     Function create = createPostAction(_title.text, _body.text);
     store.dispatch(create(store));

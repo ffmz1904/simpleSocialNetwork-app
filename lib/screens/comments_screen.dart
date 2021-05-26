@@ -45,9 +45,7 @@ class CommentsScreen extends StatelessWidget {
                 converter: (store) => store.state.posts
                     .where((post) => post.id == args.postId)
                     .first
-                    .commentsData
-                    .map((e) => Comment.fromMap(e))
-                    .toList(),
+                    .commentsData,
                 builder: (context, comments) {
                   if (comments.length == 0) {
                     return Center(child: Text('no comments'));

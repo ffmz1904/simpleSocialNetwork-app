@@ -17,7 +17,7 @@ class CreatePost {
 }
 
 class CreateComment {
-  Map<String, dynamic> comment;
+  Comment comment;
   CreateComment({this.comment});
 }
 
@@ -40,6 +40,7 @@ ThunkAction<AppState> createPostAction(title, body) {
 ThunkAction<AppState> createCommentAction(postId, text) {
   return (Store<AppState> store) async {
     final response = await CommentApi.createComment(postId, text);
-    store.dispatch(CreateComment(comment: response["comment"]));
+    store
+        .dispatch(CreateComment(comment: Comment.fromMap(response["comment"])));
   };
 }

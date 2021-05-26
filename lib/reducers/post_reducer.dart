@@ -18,14 +18,13 @@ List<Post> createPost(List<Post> posts, CreatePost action) {
 }
 
 List<Post> createComment(List<Post> posts, CreateComment action) {
+  print(action);
   List<Post> postsList = posts.map((post) {
-    if (post.id != action.comment['postId']) {
+    if (post.id != action.comment.postId) {
       return post;
     }
-    dynamic comment = action.comment;
-
-    post.comments.add(action.comment['_id']);
-    post.commentsData = [comment] + post.commentsData;
+    post.comments.add(action.comment.id);
+    post.commentsData = [action.comment] + post.commentsData;
     return post;
   }).toList();
   return postsList;

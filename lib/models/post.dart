@@ -8,7 +8,7 @@ class Post {
   String title;
   String body;
   List comments;
-  List commentsData;
+  List<Comment> commentsData;
   DateTime createdAt;
   DateTime updatedAt;
 
@@ -19,8 +19,15 @@ class Post {
     this.title = post["title"];
     this.body = post["body"];
     this.comments = post["comments"];
-    this.commentsData =
-        post["comments"].length == 0 ? [] : post["commentsData"];
+
+    if (post["comments"].length == 0) {
+      this.commentsData = [];
+    } else {
+      this.commentsData = List.from(post["commentsData"]
+          .map((comment) => Comment.fromMap(comment))
+          .toList());
+    }
+
     this.createdAt = DateTime.parse(post["createdAt"]);
     this.updatedAt = DateTime.parse(post["updatedAt"]);
   }
