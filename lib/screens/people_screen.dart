@@ -7,12 +7,27 @@ import 'package:ssn/models/user.dart';
 import 'package:ssn/widgets/nav_drawer.dart';
 import 'package:ssn/widgets/people_list.dart';
 
-class PeopleScreen extends StatelessWidget {
-  final Function getAllPeople = getAllPeopleAction();
+class PeopleScreen extends StatefulWidget {
+  @override
+  _PeopleScreenState createState() => _PeopleScreenState();
+}
+
+class _PeopleScreenState extends State<PeopleScreen> {
+  bool loading = true;
+
+  Future getPeople(store) async {
+    Function getAllPeople = getAllPeopleAction();
+    store.dispatch(getAllPeople(store));
+  }
+
   @override
   Widget build(BuildContext context) {
     Store<AppState> store = StoreProvider.of(context);
-    store.dispatch(getAllPeople(store));
+    getPeople(store).whenComplete(() => setState(() => loading = false));
+
+    if (loading) {
+      return Text('Loading ...');
+    }
 
     return Scaffold(
       drawer: NavDrawer(),

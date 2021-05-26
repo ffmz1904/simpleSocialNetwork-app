@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:ssn/models/post.dart';
+import 'package:ssn/screens/comments_screen.dart';
 import 'package:ssn/screens/post_screen.dart';
 
 class PostListItem extends StatelessWidget {
@@ -17,7 +18,7 @@ class PostListItem extends StatelessWidget {
         margin: EdgeInsets.only(bottom: 20),
         elevation: 4,
         child: Padding(
-          padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+          padding: EdgeInsets.only(top: 10, left: 10, right: 10),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
@@ -39,12 +40,21 @@ class PostListItem extends StatelessWidget {
                 children: [
                   Row(
                     children: [
-                      Icon(
-                        FontAwesomeIcons.comments,
-                        size: 16,
+                      IconButton(
+                          icon: Icon(
+                            FontAwesomeIcons.comments,
+                            size: 16,
+                            color: Theme.of(context).accentColor,
+                          ),
+                          onPressed: () => Navigator.pushNamed(
+                              context, "/comments",
+                              arguments: CommentsScreenArgs(postId: post.id))),
+                      Text(
+                        post.comments.length.toString(),
+                        style: TextStyle(
+                          color: Theme.of(context).accentColor,
+                        ),
                       ),
-                      SizedBox(width: 10),
-                      Text(post.comments.length.toString()),
                     ],
                   ),
                   Text(

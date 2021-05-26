@@ -10,6 +10,8 @@ import 'package:ssn/widgets/user_data.dart';
 class ProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final args = ModalRoute.of(context).settings.arguments as ProfileScreenArgs;
+
     return Scaffold(
       appBar: AppBar(
         title: Text("SSN"),
@@ -20,7 +22,12 @@ class ProfileScreen extends StatelessWidget {
         onPressed: () => Navigator.pushNamed(context, "/create_post"),
       ),
       body: StoreConnector<AppState, User>(
-        converter: (store) => store.state.user['data'],
+        converter: (store) => args == null
+            ? store.state.user['data']
+            : store.state.people
+                .where((people) => people.id == args.userId)
+                .toList()
+                .first,
         builder: (context, user) {
           return Container(
             child: Column(
@@ -44,4 +51,9 @@ class ProfileScreen extends StatelessWidget {
       ),
     );
   }
+}
+
+class ProfileScreenArgs {
+  String userId;
+  ProfileScreenArgs({this.userId});
 }
