@@ -21,6 +21,12 @@ class CreateComment {
   CreateComment({this.comment});
 }
 
+class RemoveComment {
+  String postId;
+  String commentId;
+  RemoveComment({this.postId, this.commentId});
+}
+
 ThunkAction<AppState> getAllPosts() {
   return (Store<AppState> store) async {
     final response = await PostApi.getAll();
@@ -42,5 +48,14 @@ ThunkAction<AppState> createCommentAction(postId, text) {
     final response = await CommentApi.createComment(postId, text);
     store
         .dispatch(CreateComment(comment: Comment.fromMap(response["comment"])));
+  };
+}
+
+ThunkAction<AppState> removeCommentAction(commentId, postId) {
+  return (Store<AppState> store) async {
+    final response = await CommentApi.removeComment(commentId);
+    if (response['success']) {
+      store.dispatch(RemoveComment(postId: postId, commentId: commentId));
+    }
   };
 }

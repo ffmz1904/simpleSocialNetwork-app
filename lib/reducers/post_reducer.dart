@@ -6,6 +6,7 @@ Reducer<List<Post>> postReducer = combineReducers([
   TypedReducer<List<Post>, SetAllPosts>(setPosts),
   TypedReducer<List<Post>, CreatePost>(createPost),
   TypedReducer<List<Post>, CreateComment>(createComment),
+  TypedReducer<List<Post>, RemoveComment>(removeComment),
 ]);
 
 List<Post> setPosts(List<Post> posts, SetAllPosts action) {
@@ -18,13 +19,28 @@ List<Post> createPost(List<Post> posts, CreatePost action) {
 }
 
 List<Post> createComment(List<Post> posts, CreateComment action) {
-  print(action);
   List<Post> postsList = posts.map((post) {
     if (post.id != action.comment.postId) {
       return post;
     }
     post.comments.add(action.comment.id);
     post.commentsData = [action.comment] + post.commentsData;
+    return post;
+  }).toList();
+  return postsList;
+}
+
+List<Post> removeComment(List<Post> posts, RemoveComment action) {
+  List<Post> postsList = posts.map((post) {
+    if (post.id == action.postId) {
+      post.comments =
+          post.comments.where((id) => id != action.commentId).toList();
+      post.commentsData = post.commentsData
+          .where((comment) => comment.id != action.commentId)
+          .toList();
+      return post;
+    }
+
     return post;
   }).toList();
   return postsList;
