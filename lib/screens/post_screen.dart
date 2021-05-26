@@ -16,6 +16,7 @@ class _PostScreenState extends State<PostScreen> {
   @override
   Widget build(BuildContext context) {
     final args = ModalRoute.of(context).settings.arguments as PostScreenArgs;
+
     return Scaffold(
       drawer: NavDrawer(),
       appBar: AppBar(
@@ -61,10 +62,7 @@ class _PostScreenState extends State<PostScreen> {
                                     Theme.of(context).colorScheme.background))),
                     child: TextButton(
                       onPressed: () => Navigator.pushNamed(context, "/comments",
-                          arguments: CommentsScreenArgs(
-                              comments: List.from(post.commentsData
-                                  .map((comment) => Comment.fromMap(comment))
-                                  .toList()))),
+                          arguments: CommentsScreenArgs(postId: post.id)),
                       child: Row(
                         children: [
                           Icon(FontAwesomeIcons.comments),

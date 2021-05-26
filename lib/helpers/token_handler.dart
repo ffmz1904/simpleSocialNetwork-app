@@ -9,7 +9,6 @@ class TokenHandler {
   static Future getToken() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String token = prefs.getString('token');
-    print('Token =====> ' + token);
     return token;
   }
 

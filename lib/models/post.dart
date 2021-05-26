@@ -1,3 +1,4 @@
+import 'package:ssn/models/comment.dart';
 import 'package:ssn/models/user.dart';
 
 class Post {
