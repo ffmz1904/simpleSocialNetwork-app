@@ -5,10 +5,12 @@ class AppState {
   Map<String, dynamic> user;
   List<Post> posts;
   List<User> people;
+  List<User> friends;
 
   AppState({
     this.posts,
     this.user,
     this.people,
+    this.friends,
   });
 }

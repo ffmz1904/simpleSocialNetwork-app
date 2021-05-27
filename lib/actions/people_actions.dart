@@ -9,6 +9,11 @@ class SetAllUsers {
   SetAllUsers({this.people});
 }
 
+class SetOneUser {
+  User user;
+  SetOneUser({this.user});
+}
+
 ThunkAction<AppState> getAllPeopleAction() {
   return (Store<AppState> store) async {
     final response = await UserApi.getAllUsers();
@@ -18,12 +23,9 @@ ThunkAction<AppState> getAllPeopleAction() {
   };
 }
 
-ThunkAction<AppState> getUserFriendsAction(userId, friendsType) {
+ThunkAction<AppState> getUserDataByIdAction(userId) {
   return (Store<AppState> store) async {
-    final response = await UserApi.getFriends(userId, friendsType);
-    store.dispatch(SetAllUsers(
-        people: List.from(response["friendsData"]
-            .map((user) => User.fromMap(user))
-            .toList())));
+    final response = await UserApi.getUserDataById(userId);
+    store.dispatch(SetOneUser(user: User.fromMap(response['user'])));
   };
 }

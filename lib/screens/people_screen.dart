@@ -20,11 +20,6 @@ class _PeopleScreenState extends State<PeopleScreen> {
     store.dispatch(getAllPeople(store));
   }
 
-  Future getFriends(store, args) async {
-    Function getUserFriends = getUserFriendsAction(args.userId, args.type);
-    store.dispatch(getUserFriends(store));
-  }
-
   @override
   Widget build(BuildContext context) {
     Store<AppState> store = StoreProvider.of(context);
@@ -33,7 +28,6 @@ class _PeopleScreenState extends State<PeopleScreen> {
       getPeople(store).whenComplete(() => setState(() => loading = false));
       return Text('Loading ...');
     }
-
     return Scaffold(
       drawer: NavDrawer(),
       appBar: AppBar(
@@ -42,6 +36,9 @@ class _PeopleScreenState extends State<PeopleScreen> {
       body: StoreConnector<AppState, List<User>>(
         converter: (store) => store.state.people,
         builder: (context, people) {
+          if (people == null) {
+            return Text('Loading ...');
+          }
           return PeopleList(people: people);
         },
       ),

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux/redux.dart';
-import 'package:ssn/actions/people_actions.dart';
+import 'package:ssn/actions/friends_actions.dart';
 import 'package:ssn/app_state.dart';
 import 'package:ssn/models/user.dart';
 import 'package:ssn/widgets/friends_list_card.dart';
@@ -37,8 +37,12 @@ class _FriendsScreenState extends State<FriendsScreen> {
         title: Text("SSN"),
       ),
       body: StoreConnector<AppState, List<User>>(
-        converter: (store) => store.state.people,
+        converter: (store) => store.state.friends,
         builder: (context, friends) {
+          if (friends == null) {
+            return Text('Loading ...');
+          }
+
           if (friends.length == 0) {
             return Center(
               child: Text(args.type == 'follow'

@@ -7,7 +7,12 @@ import 'package:ssn/widgets/nav_drawer.dart';
 import 'package:ssn/widgets/posts_list.dart';
 import 'package:ssn/widgets/user_data.dart';
 
-class ProfileScreen extends StatelessWidget {
+class ProfileScreen extends StatefulWidget {
+  @override
+  _ProfileScreenState createState() => _ProfileScreenState();
+}
+
+class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
     final args = ModalRoute.of(context).settings.arguments as ProfileScreenArgs;
