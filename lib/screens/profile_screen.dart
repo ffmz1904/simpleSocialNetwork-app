@@ -32,7 +32,7 @@ class ProfileScreen extends StatelessWidget {
           return Container(
             child: Column(
               children: [
-                UserData(data: user),
+                UserData(userId: user.id, authUser: args == null),
                 SizedBox(height: 10),
                 Expanded(
                   child: StoreConnector<AppState, List<Post>>(

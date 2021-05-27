@@ -3,14 +3,16 @@ class User {
   String email;
   String name;
   String image;
-  List friends;
+  List follow;
+  List subscribers;
 
   User({
     this.id,
     this.email,
     this.name,
     this.image,
-    this.friends,
+    this.follow,
+    this.subscribers,
   });
 
   User.fromMap(user) {
@@ -18,6 +20,7 @@ class User {
     this.email = user["email"];
     this.name = user["name"];
     this.image = user["img"];
-    this.friends = user["friends"];
+    this.follow = user["follow"];
+    this.subscribers = user["subscribers"];
   }
 }

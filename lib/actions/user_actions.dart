@@ -15,6 +15,12 @@ class RemoveUserData {
   RemoveUserData();
 }
 
+class UpdateUserFriends {
+  User user;
+  User friend;
+  UpdateUserFriends({this.user, this.friend});
+}
+
 ThunkAction<AppState> userLogin(email, password, context) {
   return (Store<AppState> store) async {
     final response = await UserApi.login(email, password);
@@ -38,5 +44,23 @@ ThunkAction<AppState> checkAuthAction() {
     }
 
     return store.dispatch(RemoveUserData);
+  };
+}
+
+ThunkAction<AppState> subscribeAction(subscribeToId) {
+  return (Store<AppState> store) async {
+    final response = await UserApi.subscribe(subscribeToId);
+    store.dispatch(UpdateUserFriends(
+        user: User.fromMap(response['user']),
+        friend: User.fromMap(response['userSubscribingTo'])));
+  };
+}
+
+ThunkAction<AppState> unsubscribeAction(unsubscribeId) {
+  return (Store<AppState> store) async {
+    final response = await UserApi.unsubscribe(unsubscribeId);
+    store.dispatch(UpdateUserFriends(
+        user: User.fromMap(response['user']),
+        friend: User.fromMap(response['unsubscribedUser'])));
   };
 }

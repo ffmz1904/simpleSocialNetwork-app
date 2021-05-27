@@ -4,6 +4,7 @@ import 'package:ssn/actions/user_actions.dart';
 Reducer<Map<String, dynamic>> userReducer = combineReducers([
   TypedReducer<Map<String, dynamic>, SetUserData>(setUserData),
   TypedReducer<Map<String, dynamic>, RemoveUserData>(removeUserData),
+  TypedReducer<Map<String, dynamic>, UpdateUserFriends>(updateFriendsList),
 ]);
 
 Map<String, dynamic> setUserData(
@@ -18,4 +19,14 @@ Map<String, dynamic> removeUserData(
   RemoveUserData action,
 ) {
   return {'isAuth': false, 'data': {}};
+}
+
+Map<String, dynamic> updateFriendsList(
+  Map<String, dynamic> user,
+  UpdateUserFriends action,
+) {
+  return {
+    'isAuth': user['isAuth'],
+    'data': action.user,
+  };
 }

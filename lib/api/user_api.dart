@@ -36,4 +36,20 @@ class UserApi {
     Map response = await Api.get(endpoint: apiBaseUri).request();
     return response;
   }
+
+  static Future subscribe(subscribeTo) async {
+    Map response = await Api.post(
+        endpoint: apiBaseUri + 'subscribe_request',
+        body: {'subscribeTo': subscribeTo}).request();
+
+    return response;
+  }
+
+  static Future unsubscribe(unsubscribeId) async {
+    Map response = await Api.post(
+        endpoint: apiBaseUri + 'unsubscribe',
+        body: {'unsubscribedId': unsubscribeId}).request();
+
+    return response;
+  }
 }
