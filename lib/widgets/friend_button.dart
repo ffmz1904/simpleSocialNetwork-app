@@ -26,7 +26,6 @@ class _FriendButtonState extends State<FriendButton> {
 
   @override
   Widget build(BuildContext context) {
-    print(isSubscribe);
     Store<AppState> store = StoreProvider.of(context);
 
     return Container(

@@ -17,3 +17,13 @@ ThunkAction<AppState> getAllPeopleAction() {
             response['users'].map((user) => User.fromMap(user)).toList())));
   };
 }
+
+ThunkAction<AppState> getUserFriendsAction(userId, friendsType) {
+  return (Store<AppState> store) async {
+    final response = await UserApi.getFriends(userId, friendsType);
+    store.dispatch(SetAllUsers(
+        people: List.from(response["friendsData"]
+            .map((user) => User.fromMap(user))
+            .toList())));
+  };
+}

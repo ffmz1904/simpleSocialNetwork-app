@@ -20,12 +20,17 @@ class _PeopleScreenState extends State<PeopleScreen> {
     store.dispatch(getAllPeople(store));
   }
 
+  Future getFriends(store, args) async {
+    Function getUserFriends = getUserFriendsAction(args.userId, args.type);
+    store.dispatch(getUserFriends(store));
+  }
+
   @override
   Widget build(BuildContext context) {
     Store<AppState> store = StoreProvider.of(context);
-    getPeople(store).whenComplete(() => setState(() => loading = false));
 
     if (loading) {
+      getPeople(store).whenComplete(() => setState(() => loading = false));
       return Text('Loading ...');
     }
 

@@ -9,7 +9,8 @@ Reducer<List<User>> peopleReducer = combineReducers([
 ]);
 
 List<User> setPeople(List<User> people, SetAllUsers action) {
-  return action.people;
+  List<User> peopleList = action.people;
+  return peopleList;
 }
 
 List<User> updateFriendsList(

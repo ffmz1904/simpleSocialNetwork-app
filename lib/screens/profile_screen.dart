@@ -17,10 +17,12 @@ class ProfileScreen extends StatelessWidget {
         title: Text("SSN"),
       ),
       drawer: NavDrawer(),
-      floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.add),
-        onPressed: () => Navigator.pushNamed(context, "/create_post"),
-      ),
+      floatingActionButton: args == null
+          ? FloatingActionButton(
+              child: Icon(Icons.add),
+              onPressed: () => Navigator.pushNamed(context, "/create_post"),
+            )
+          : null,
       body: StoreConnector<AppState, User>(
         converter: (store) => args == null
             ? store.state.user['data']

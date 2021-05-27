@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:ssn/app_state.dart';
 import 'package:ssn/models/user.dart';
+import 'package:ssn/screens/friends_screen.dart';
 import 'package:ssn/widgets/friend_button.dart';
 
 class UserData extends StatelessWidget {
@@ -15,7 +16,10 @@ class UserData extends StatelessWidget {
     return StoreConnector<AppState, User>(
       converter: (store) => authUser
           ? store.state.user['data']
-          : store.state.people.where((user) => user.id == userId).first,
+          : store.state.people
+              .where((user) => user.id == userId)
+              .toList()
+              .first,
       builder: (context, user) {
         return Container(
           decoration: BoxDecoration(color: Colors.white, boxShadow: [
@@ -43,9 +47,20 @@ class UserData extends StatelessWidget {
                               fontWeight: FontWeight.bold, fontSize: 16)),
                       Row(
                         children: [
-                          Text('Follow: ${user.follow.length}'),
+                          TextButton(
+                              onPressed: () => Navigator.pushNamed(
+                                  context, "/friends",
+                                  arguments: FriendsScreenArgs(
+                                      userId: userId, type: 'follow')),
+                              child: Text('Follow: ${user.follow.length}')),
                           SizedBox(width: 20),
-                          Text('Subscribers: ${user.subscribers.length}'),
+                          TextButton(
+                              onPressed: () => Navigator.pushNamed(
+                                  context, "/friends",
+                                  arguments: FriendsScreenArgs(
+                                      userId: userId, type: 'subscribers')),
+                              child: Text(
+                                  'Subscribers: ${user.subscribers.length}')),
                         ],
                       ),
                       SizedBox(height: 14),

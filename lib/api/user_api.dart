@@ -52,4 +52,11 @@ class UserApi {
 
     return response;
   }
+
+  static Future getFriends(userId, type) async {
+    Map response =
+        await Api.get(endpoint: apiBaseUri + 'friends/' + userId + '/' + type)
+            .request();
+    return response;
+  }
 }
