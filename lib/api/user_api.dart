@@ -27,11 +27,6 @@ class UserApi {
     return response;
   }
 
-  static Future getUserDataById(id) async {
-    Map response = await Api.get(endpoint: apiBaseUri + id).request();
-    return response;
-  }
-
   static Future getAllUsers() async {
     Map response = await Api.get(endpoint: apiBaseUri).request();
     return response;

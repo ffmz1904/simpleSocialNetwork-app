@@ -23,10 +23,3 @@ ThunkAction<AppState> getAllPeopleAction(cb) {
     cb();
   };
 }
-
-ThunkAction<AppState> getUserDataByIdAction(userId) {
-  return (Store<AppState> store) async {
-    final response = await UserApi.getUserDataById(userId);
-    store.dispatch(SetOneUser(user: User.fromMap(response['user'])));
-  };
-}
