@@ -27,12 +27,13 @@ class RemoveComment {
   RemoveComment({this.postId, this.commentId});
 }
 
-ThunkAction<AppState> getAllPosts() {
+ThunkAction<AppState> getAllPosts(cb) {
   return (Store<AppState> store) async {
     final response = await PostApi.getAll();
     List<Post> posts =
         List.from(response["posts"]).map((post) => Post.fromMap(post)).toList();
     store.dispatch(SetAllPosts(posts: posts));
+    cb();
   };
 }
 

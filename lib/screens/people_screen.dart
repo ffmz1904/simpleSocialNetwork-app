@@ -14,19 +14,14 @@ class PeopleScreen extends StatefulWidget {
 
 class _PeopleScreenState extends State<PeopleScreen> {
   bool loading = true;
-
-  Future getPeople(store) async {
-    Function getAllPeople = getAllPeopleAction();
-    store.dispatch(getAllPeople(store));
-  }
+  void setLoading() => setState(() => loading = !loading);
 
   @override
   Widget build(BuildContext context) {
-    Store<AppState> store = StoreProvider.of(context);
-
     if (loading) {
-      getPeople(store).whenComplete(() => setState(() => loading = false));
-      return Text('Loading ...');
+      Store<AppState> store = StoreProvider.of(context);
+      Function getAllPeople = getAllPeopleAction(setLoading);
+      store.dispatch(getAllPeople(store));
     }
     return Scaffold(
       drawer: NavDrawer(),
@@ -36,8 +31,10 @@ class _PeopleScreenState extends State<PeopleScreen> {
       body: StoreConnector<AppState, List<User>>(
         converter: (store) => store.state.people,
         builder: (context, people) {
-          if (people == null) {
-            return Text('Loading ...');
+          if (loading) {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
           }
           return PeopleList(people: people);
         },

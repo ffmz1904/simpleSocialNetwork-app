@@ -9,12 +9,13 @@ class SetAllFriends {
   SetAllFriends({this.friends});
 }
 
-ThunkAction<AppState> getUserFriendsAction(userId, friendsType) {
+ThunkAction<AppState> getUserFriendsAction(userId, friendsType, cb) {
   return (Store<AppState> store) async {
     final response = await UserApi.getFriends(userId, friendsType);
     store.dispatch(SetAllFriends(
         friends: List.from(response["friendsData"]
             .map((user) => User.fromMap(user))
             .toList())));
+    cb();
   };
 }

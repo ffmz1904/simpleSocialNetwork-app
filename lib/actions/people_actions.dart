@@ -14,12 +14,13 @@ class SetOneUser {
   SetOneUser({this.user});
 }
 
-ThunkAction<AppState> getAllPeopleAction() {
+ThunkAction<AppState> getAllPeopleAction(cb) {
   return (Store<AppState> store) async {
     final response = await UserApi.getAllUsers();
     store.dispatch(SetAllUsers(
         people: List.from(
             response['users'].map((user) => User.fromMap(user)).toList())));
+    cb();
   };
 }
 

@@ -7,13 +7,23 @@ import 'package:ssn/models/post.dart';
 import 'package:ssn/widgets/nav_drawer.dart';
 import 'package:ssn/widgets/posts_list.dart';
 
-class HomeScreen extends StatelessWidget {
-  final Function getPosts = getAllPosts();
+class HomeScreen extends StatefulWidget {
+  @override
+  _HomeScreenState createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  bool loading = true;
+
+  void setLoading() => setState(() => loading = !loading);
 
   @override
   Widget build(BuildContext context) {
-    Store<AppState> store = StoreProvider.of(context);
-    store.dispatch(getPosts(store));
+    if (loading) {
+      Store<AppState> store = StoreProvider.of(context);
+      Function getPosts = getAllPosts(setLoading);
+      store.dispatch(getPosts(store));
+    }
 
     return Scaffold(
       drawer: NavDrawer(),
@@ -23,6 +33,11 @@ class HomeScreen extends StatelessWidget {
       body: StoreConnector<AppState, List<Post>>(
           converter: (store) => store.state.posts,
           builder: (context, posts) {
+            if (loading) {
+              return Center(
+                child: CircularProgressIndicator(),
+              );
+            }
             return PostsList(posts: posts);
           }),
     );

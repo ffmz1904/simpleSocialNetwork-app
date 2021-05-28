@@ -14,21 +14,17 @@ class FriendsScreen extends StatefulWidget {
 
 class _FriendsScreenState extends State<FriendsScreen> {
   bool loading = true;
-
-  Future getFriends(store, args) async {
-    Function loadFriendsData = getUserFriendsAction(args.userId, args.type);
-    store.dispatch(loadFriendsData(store));
-  }
+  void setLoading() => setState(() => loading = !loading);
 
   @override
   Widget build(BuildContext context) {
     final args = ModalRoute.of(context).settings.arguments as FriendsScreenArgs;
-    Store<AppState> store = StoreProvider.of(context);
 
     if (loading) {
-      getFriends(store, args)
-          .whenComplete(() => setState(() => loading = false));
-      return Text('Loading ...');
+      Store<AppState> store = StoreProvider.of(context);
+      Function loadFriendsData =
+          getUserFriendsAction(args.userId, args.type, setLoading);
+      store.dispatch(loadFriendsData(store));
     }
 
     return Scaffold(
@@ -39,8 +35,10 @@ class _FriendsScreenState extends State<FriendsScreen> {
       body: StoreConnector<AppState, List<User>>(
         converter: (store) => store.state.friends,
         builder: (context, friends) {
-          if (friends == null) {
-            return Text('Loading ...');
+          if (loading) {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
           }
 
           if (friends.length == 0) {
