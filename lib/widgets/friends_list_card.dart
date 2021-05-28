@@ -4,6 +4,7 @@ import 'package:ssn/app_state.dart';
 import 'package:ssn/models/user.dart';
 import 'package:ssn/screens/profile_screen.dart';
 import 'package:ssn/widgets/friend_button.dart';
+import 'package:ssn/widgets/user_avatar.dart';
 
 class FriendsListCard extends StatelessWidget {
   final User user;
@@ -21,10 +22,9 @@ class FriendsListCard extends StatelessWidget {
           children: [
             Row(
               children: [
-                CircleAvatar(
+                UserAvatar(
+                  url: user.image,
                   radius: 30,
-                  backgroundImage:
-                      NetworkImage('http://10.0.2.2:4000/' + user.image),
                 ),
                 SizedBox(width: 15),
                 TextButton(

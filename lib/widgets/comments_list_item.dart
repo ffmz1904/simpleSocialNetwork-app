@@ -5,6 +5,7 @@ import 'package:ssn/actions/post_actions.dart';
 import 'package:ssn/app_state.dart';
 import 'package:ssn/models/comment.dart';
 import 'package:ssn/models/user.dart';
+import 'package:ssn/widgets/user_avatar.dart';
 
 class CommentListItem extends StatelessWidget {
   final Comment comment;
@@ -31,11 +32,7 @@ class CommentListItem extends StatelessWidget {
                 children: [
                   Container(
                     margin: EdgeInsets.only(right: 10),
-                    child: CircleAvatar(
-                      backgroundImage: NetworkImage(
-                        'http://10.0.2.2:4000/' + comment.userData.image,
-                      ),
-                    ),
+                    child: UserAvatar(url: comment.userData.image),
                   ),
                   Expanded(
                     child: Padding(

@@ -4,6 +4,7 @@ import 'package:ssn/app_state.dart';
 import 'package:ssn/models/user.dart';
 import 'package:ssn/screens/friends_screen.dart';
 import 'package:ssn/widgets/friend_button.dart';
+import 'package:ssn/widgets/user_avatar.dart';
 
 class UserData extends StatelessWidget {
   final String userId;
@@ -30,10 +31,9 @@ class UserData extends StatelessWidget {
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              CircleAvatar(
+              UserAvatar(
                 radius: 50,
-                backgroundImage:
-                    NetworkImage('http://10.0.2.2:4000/' + user.image),
+                url: user.image,
               ),
               Expanded(
                 child: Container(

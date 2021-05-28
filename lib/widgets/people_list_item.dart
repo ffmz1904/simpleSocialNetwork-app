@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:ssn/models/user.dart';
 import 'package:ssn/screens/profile_screen.dart';
+import 'package:ssn/widgets/user_avatar.dart';
 
 class PeopleListItem extends StatelessWidget {
   final User user;
@@ -32,10 +33,9 @@ class PeopleListItem extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            CircleAvatar(
+            UserAvatar(
+              url: user.image,
               radius: 50,
-              backgroundImage:
-                  NetworkImage("http://10.0.2.2:4000/" + user.image),
             ),
             SizedBox(
               height: 15,
