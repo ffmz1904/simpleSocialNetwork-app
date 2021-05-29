@@ -58,6 +58,7 @@ class _SettingScreenState extends State<SettingScreen> {
     FormData formData = new FormData.fromMap(params);
     Function update = updateProfileAction(formData);
     store.dispatch(update(store));
+    Navigator.pushNamed(context, "/profile");
   }
 
   @override
@@ -69,43 +70,48 @@ class _SettingScreenState extends State<SettingScreen> {
         title: Text("SSN"),
       ),
       drawer: NavDrawer(),
-      body: StoreConnector<AppState, User>(
-        converter: (store) => store.state.user['data'],
-        builder: (context, user) {
-          return Container(
-            margin: EdgeInsets.symmetric(vertical: 15, horizontal: 10),
-            child: ListView(
-              children: [
-                Container(
-                  child: Column(
-                    children: [
-                      _image != null
-                          ? CircleAvatar(
-                              backgroundImage: FileImage(_image),
-                              radius: 50,
-                            )
-                          : UserAvatar(
-                              url: user.image,
-                              radius: 50,
-                            ),
-                      TextButton(
-                          onPressed: () => getImage(),
-                          child: Text('Change image')),
-                    ],
-                  ),
-                ),
-                _userDataForm(user.name, user.email),
-                _userChangePassForm(),
-                Center(
-                  child: ElevatedButton(
-                    child: Text('Save'),
-                    onPressed: () => updateProfile(store),
-                  ),
-                ),
-              ],
-            ),
-          );
+      body: GestureDetector(
+        onTap: () {
+          FocusScope.of(context).requestFocus(new FocusNode());
         },
+        child: StoreConnector<AppState, User>(
+          converter: (store) => store.state.user['data'],
+          builder: (context, user) {
+            return Container(
+              margin: EdgeInsets.symmetric(vertical: 15, horizontal: 10),
+              child: ListView(
+                children: [
+                  Container(
+                    child: Column(
+                      children: [
+                        _image != null
+                            ? CircleAvatar(
+                                backgroundImage: FileImage(_image),
+                                radius: 50,
+                              )
+                            : UserAvatar(
+                                url: user.image,
+                                radius: 50,
+                              ),
+                        TextButton(
+                            onPressed: () => getImage(),
+                            child: Text('Change image')),
+                      ],
+                    ),
+                  ),
+                  _userDataForm(user.name, user.email),
+                  _userChangePassForm(),
+                  Center(
+                    child: ElevatedButton(
+                      child: Text('Save'),
+                      onPressed: () => updateProfile(store),
+                    ),
+                  ),
+                ],
+              ),
+            );
+          },
+        ),
       ),
     );
   }

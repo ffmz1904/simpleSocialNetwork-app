@@ -84,6 +84,8 @@ class Api {
       case RequestMethod.PATCH:
         response = await dio.patch(uri, data: this.formData, options: options);
         break;
+      default:
+        return false;
     }
 
     Map<String, dynamic> responseMap = jsonDecode(response.toString());
