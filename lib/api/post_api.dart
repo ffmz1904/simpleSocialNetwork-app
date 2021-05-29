@@ -18,4 +18,11 @@ class PostApi {
     Map response = await Api.delete(endpoint: apiBaseUri + id).request();
     return response;
   }
+
+  static Future updatePost(id, title, body) async {
+    Map response = await Api.put(
+        endpoint: apiBaseUri + id,
+        body: {'title': title, 'body': body}).request();
+    return response;
+  }
 }

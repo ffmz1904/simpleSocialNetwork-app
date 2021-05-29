@@ -16,6 +16,11 @@ class CreatePost {
   CreatePost({this.post});
 }
 
+class UpdatePost {
+  Post post;
+  UpdatePost({this.post});
+}
+
 class RemovePost {
   String id;
   RemovePost({this.id});
@@ -42,10 +47,19 @@ ThunkAction<AppState> getAllPosts(cb) {
   };
 }
 
-ThunkAction<AppState> createPostAction(title, body) {
+ThunkAction<AppState> createPostAction(title, body, cb) {
   return (Store<AppState> store) async {
     final response = await PostApi.createPost(title, body);
     store.dispatch(CreatePost(post: Post.fromMap(response["post"])));
+    cb();
+  };
+}
+
+ThunkAction<AppState> updatePostAction(postId, title, body, cb) {
+  return (Store<AppState> store) async {
+    final response = await PostApi.updatePost(postId, title, body);
+    store.dispatch(UpdatePost(post: Post.fromMap(response["post"])));
+    cb();
   };
 }
 

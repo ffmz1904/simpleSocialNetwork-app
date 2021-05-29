@@ -7,6 +7,7 @@ import 'package:ssn/app_state.dart';
 import 'package:ssn/models/comment.dart';
 import 'package:ssn/models/post.dart';
 import 'package:ssn/screens/comments_screen.dart';
+import 'package:ssn/screens/create_post_screen.dart';
 import 'package:ssn/widgets/nav_drawer.dart';
 
 class PostScreen extends StatefulWidget {
@@ -89,7 +90,10 @@ class _PostScreenState extends State<PostScreen> {
                                     icon: Icon(FontAwesomeIcons.edit),
                                     iconSize: 16,
                                     color: Colors.blueAccent,
-                                    onPressed: () => print('edit'),
+                                    onPressed: () => Navigator.pushNamed(
+                                        context, "/create_post",
+                                        arguments:
+                                            CreatePostScreenArgs(post: post)),
                                   ),
                                   IconButton(
                                     icon: Icon(FontAwesomeIcons.trashAlt),

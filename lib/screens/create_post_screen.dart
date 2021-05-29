@@ -4,6 +4,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:redux/redux.dart';
 import 'package:ssn/actions/post_actions.dart';
 import 'package:ssn/app_state.dart';
+import 'package:ssn/models/post.dart';
 
 class CreatePostScreen extends StatefulWidget {
   @override
@@ -14,14 +15,30 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
   TextEditingController _title = TextEditingController();
   TextEditingController _body = TextEditingController();
 
-  Future createPost(context) async {
-    Store<AppState> store = StoreProvider.of(context);
-    Function create = createPostAction(_title.text, _body.text);
+  Future createPost(store) async {
+    Function create = createPostAction(_title.text, _body.text,
+        () => Navigator.pushNamed(context, "/profile"));
     store.dispatch(create(store));
+  }
+
+  Function updatePost(store, postId) {
+    Function update = updatePostAction(
+        postId, _title.text, _body.text, () => Navigator.pop(context));
+
+    store.dispatch(update(store));
   }
 
   @override
   Widget build(BuildContext context) {
+    Store<AppState> store = StoreProvider.of(context);
+    final args =
+        ModalRoute.of(context).settings.arguments as CreatePostScreenArgs;
+
+    if (args != null) {
+      _title.text = args.post.title;
+      _body.text = args.post.body;
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: Text("SSN"),
@@ -62,11 +79,15 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                       )),
                 ),
                 SizedBox(height: 15),
-                ElevatedButton(
-                  onPressed: () => createPost(context).whenComplete(
-                      () => Navigator.pushNamed(context, "/profile")),
-                  child: Text('Create'),
-                ),
+                args == null
+                    ? ElevatedButton(
+                        onPressed: () => createPost(store),
+                        child: Text('Create'),
+                      )
+                    : ElevatedButton(
+                        onPressed: () => updatePost(store, args.post.id),
+                        child: Text('Update'),
+                      )
               ],
             ),
           ),
@@ -74,4 +95,9 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
       ),
     );
   }
+}
+
+class CreatePostScreenArgs {
+  Post post;
+  CreatePostScreenArgs({this.post});
 }
