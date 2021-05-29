@@ -16,6 +16,11 @@ class CreatePost {
   CreatePost({this.post});
 }
 
+class RemovePost {
+  String id;
+  RemovePost({this.id});
+}
+
 class CreateComment {
   Comment comment;
   CreateComment({this.comment});
@@ -41,6 +46,15 @@ ThunkAction<AppState> createPostAction(title, body) {
   return (Store<AppState> store) async {
     final response = await PostApi.createPost(title, body);
     store.dispatch(CreatePost(post: Post.fromMap(response["post"])));
+  };
+}
+
+ThunkAction<AppState> removePostAction(postId) {
+  return (Store<AppState> store) async {
+    final response = await PostApi.removePost(postId);
+    if (response['success']) {
+      store.dispatch(RemovePost(id: postId));
+    }
   };
 }
 

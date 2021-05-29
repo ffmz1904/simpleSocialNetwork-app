@@ -5,6 +5,7 @@ import 'package:ssn/models/post.dart';
 Reducer<List<Post>> postReducer = combineReducers([
   TypedReducer<List<Post>, SetAllPosts>(setPosts),
   TypedReducer<List<Post>, CreatePost>(createPost),
+  TypedReducer<List<Post>, RemovePost>(removePost),
   TypedReducer<List<Post>, CreateComment>(createComment),
   TypedReducer<List<Post>, RemoveComment>(removeComment),
 ]);
@@ -15,6 +16,11 @@ List<Post> setPosts(List<Post> posts, SetAllPosts action) {
 
 List<Post> createPost(List<Post> posts, CreatePost action) {
   List<Post> postsList = [action.post] + posts;
+  return postsList;
+}
+
+List<Post> removePost(List<Post> posts, RemovePost action) {
+  List<Post> postsList = posts.where((post) => post.id != action.id).toList();
   return postsList;
 }
 

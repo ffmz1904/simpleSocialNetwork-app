@@ -13,4 +13,9 @@ class PostApi {
         endpoint: apiBaseUri, body: {'title': title, 'body': body}).request();
     return response;
   }
+
+  static Future removePost(id) async {
+    Map response = await Api.delete(endpoint: apiBaseUri + id).request();
+    return response;
+  }
 }

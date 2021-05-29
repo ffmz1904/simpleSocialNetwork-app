@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:redux/redux.dart';
+import 'package:ssn/actions/post_actions.dart';
 import 'package:ssn/app_state.dart';
 import 'package:ssn/models/comment.dart';
 import 'package:ssn/models/post.dart';
@@ -15,6 +17,7 @@ class PostScreen extends StatefulWidget {
 class _PostScreenState extends State<PostScreen> {
   @override
   Widget build(BuildContext context) {
+    Store<AppState> store = StoreProvider.of(context);
     final args = ModalRoute.of(context).settings.arguments as PostScreenArgs;
 
     return Scaffold(
@@ -60,16 +63,53 @@ class _PostScreenState extends State<PostScreen> {
                                 width: 2,
                                 color:
                                     Theme.of(context).colorScheme.background))),
-                    child: TextButton(
-                      onPressed: () => Navigator.pushNamed(context, "/comments",
-                          arguments: CommentsScreenArgs(postId: post.id)),
-                      child: Row(
-                        children: [
-                          Icon(FontAwesomeIcons.comments),
-                          SizedBox(width: 10),
-                          Text('${post.comments.length}'),
-                        ],
-                      ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        TextButton(
+                          onPressed: () => Navigator.pushNamed(
+                              context, "/comments",
+                              arguments: CommentsScreenArgs(postId: post.id)),
+                          child: Row(
+                            children: [
+                              Icon(FontAwesomeIcons.comments),
+                              SizedBox(width: 10),
+                              Text('${post.comments.length}'),
+                            ],
+                          ),
+                        ),
+                        StoreConnector<AppState, Map<String, dynamic>>(
+                          converter: (store) => store.state.user,
+                          builder: (context, authUser) {
+                            if (authUser['isAuth'] &&
+                                authUser['data'].id == post.userId) {
+                              return Row(
+                                children: [
+                                  IconButton(
+                                    icon: Icon(FontAwesomeIcons.edit),
+                                    iconSize: 16,
+                                    color: Colors.blueAccent,
+                                    onPressed: () => print('edit'),
+                                  ),
+                                  IconButton(
+                                    icon: Icon(FontAwesomeIcons.trashAlt),
+                                    iconSize: 16,
+                                    color: Colors.redAccent,
+                                    onPressed: () {
+                                      Function remove =
+                                          removePostAction(post.id);
+                                      store.dispatch(remove(store));
+                                      Navigator.pop(context);
+                                    },
+                                  ),
+                                ],
+                              );
+                            }
+
+                            return SizedBox();
+                          },
+                        ),
+                      ],
                     ))
               ]));
         },
