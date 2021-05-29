@@ -6,11 +6,13 @@ class AppState {
   List<Post> posts;
   List<User> people;
   List<User> friends;
+  String error;
 
   AppState({
     this.posts,
     this.user,
     this.people,
     this.friends,
+    this.error,
   });
 }

@@ -3,7 +3,6 @@ import 'package:flutter_redux/flutter_redux.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:ssn/actions/user_actions.dart';
 import 'package:ssn/app_state.dart';
-import 'package:ssn/helpers/token_handler.dart';
 
 class NavDrawer extends StatelessWidget {
   @override
@@ -16,7 +15,12 @@ class NavDrawer extends StatelessWidget {
         return Drawer(
           child: ListView(
             children: <Widget>[
-              DrawerHeader(child: Text('header')),
+              DrawerHeader(
+                  child: Center(
+                      child: Text(
+                'SSN',
+                style: TextStyle(fontSize: 50, fontWeight: FontWeight.bold),
+              ))),
               ListTile(
                 leading: Icon(Icons.home),
                 title: Text('Posts'),
@@ -57,8 +61,9 @@ class NavDrawer extends StatelessWidget {
         StoreConnector<AppState, VoidCallback>(
           converter: (store) {
             return () {
-              TokenHandler.removeToken();
-              store.dispatch(RemoveUserData());
+              Navigator.pushNamed(context, "/");
+              Function logOut = userLogOut();
+              store.dispatch(logOut(store));
             };
           },
           builder: (context, callback) {

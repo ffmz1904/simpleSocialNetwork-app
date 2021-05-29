@@ -4,6 +4,7 @@ import 'package:redux/redux.dart';
 import 'package:ssn/actions/people_actions.dart';
 import 'package:ssn/app_state.dart';
 import 'package:ssn/models/user.dart';
+import 'package:ssn/widgets/error_window.dart';
 import 'package:ssn/widgets/nav_drawer.dart';
 import 'package:ssn/widgets/people_list.dart';
 
@@ -28,15 +29,25 @@ class _PeopleScreenState extends State<PeopleScreen> {
       appBar: AppBar(
         title: Text("SSN"),
       ),
-      body: StoreConnector<AppState, List<User>>(
-        converter: (store) => store.state.people,
-        builder: (context, people) {
-          if (loading) {
-            return Center(
-              child: CircularProgressIndicator(),
-            );
-          }
-          return PeopleList(people: people);
+      body: StoreConnector<AppState, String>(
+        converter: (store) => store.state.error,
+        builder: (context, error) {
+          return Stack(
+            children: [
+              StoreConnector<AppState, List<User>>(
+                converter: (store) => store.state.people,
+                builder: (context, people) {
+                  if (loading) {
+                    return Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  }
+                  return PeopleList(people: people);
+                },
+              ),
+              error != null ? ErrorWindow() : SizedBox(),
+            ],
+          );
         },
       ),
     );

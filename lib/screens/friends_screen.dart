@@ -4,6 +4,7 @@ import 'package:redux/redux.dart';
 import 'package:ssn/actions/friends_actions.dart';
 import 'package:ssn/app_state.dart';
 import 'package:ssn/models/user.dart';
+import 'package:ssn/widgets/error_window.dart';
 import 'package:ssn/widgets/friends_list_card.dart';
 import 'package:ssn/widgets/nav_drawer.dart';
 
@@ -50,9 +51,20 @@ class _FriendsScreenState extends State<FriendsScreen> {
           }
 
           return Container(
-            child: ListView.builder(
-              itemCount: friends.length,
-              itemBuilder: (context, i) => FriendsListCard(user: friends[i]),
+            child: StoreConnector<AppState, String>(
+              converter: (store) => store.state.error,
+              builder: (context, error) {
+                return Stack(
+                  children: [
+                    ListView.builder(
+                      itemCount: friends.length,
+                      itemBuilder: (context, i) =>
+                          FriendsListCard(user: friends[i]),
+                    ),
+                    error != null ? ErrorWindow() : SizedBox(),
+                  ],
+                );
+              },
             ),
           );
         },

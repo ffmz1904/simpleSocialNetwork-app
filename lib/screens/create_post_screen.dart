@@ -5,6 +5,7 @@ import 'package:redux/redux.dart';
 import 'package:ssn/actions/post_actions.dart';
 import 'package:ssn/app_state.dart';
 import 'package:ssn/models/post.dart';
+import 'package:ssn/widgets/error_window.dart';
 
 class CreatePostScreen extends StatefulWidget {
   @override
@@ -54,44 +55,55 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
         onTap: () {
           FocusScope.of(context).requestFocus(new FocusNode());
         },
-        child: ListView(children: [
-          Container(
-            margin: EdgeInsets.symmetric(vertical: 20, horizontal: 15),
-            child: Column(
+        child: StoreConnector<AppState, String>(
+          converter: (store) => store.state.error,
+          builder: (context, error) {
+            return Stack(
               children: [
-                TextField(
-                  controller: _title,
-                  maxLines: 3,
-                  decoration: InputDecoration(
-                      hintText: 'Title ...',
-                      border: OutlineInputBorder(
-                        borderSide: BorderSide(width: 5.0),
-                      )),
-                ),
-                SizedBox(height: 30),
-                TextField(
-                  controller: _body,
-                  maxLines: 10,
-                  decoration: InputDecoration(
-                      hintText: 'Text ...',
-                      border: OutlineInputBorder(
-                        borderSide: BorderSide(width: 5.0),
-                      )),
-                ),
-                SizedBox(height: 15),
-                args == null
-                    ? ElevatedButton(
-                        onPressed: () => createPost(store),
-                        child: Text('Create'),
-                      )
-                    : ElevatedButton(
-                        onPressed: () => updatePost(store, args.post.id),
-                        child: Text('Update'),
-                      )
+                ListView(children: [
+                  Container(
+                    margin: EdgeInsets.symmetric(vertical: 20, horizontal: 15),
+                    child: Column(
+                      children: [
+                        TextField(
+                          controller: _title,
+                          maxLines: 3,
+                          decoration: InputDecoration(
+                              hintText: 'Title ...',
+                              border: OutlineInputBorder(
+                                borderSide: BorderSide(width: 5.0),
+                              )),
+                        ),
+                        SizedBox(height: 30),
+                        TextField(
+                          controller: _body,
+                          maxLines: 10,
+                          decoration: InputDecoration(
+                              hintText: 'Text ...',
+                              border: OutlineInputBorder(
+                                borderSide: BorderSide(width: 5.0),
+                              )),
+                        ),
+                        SizedBox(height: 15),
+                        args == null
+                            ? ElevatedButton(
+                                onPressed: () => createPost(store),
+                                child: Text('Create'),
+                              )
+                            : ElevatedButton(
+                                onPressed: () =>
+                                    updatePost(store, args.post.id),
+                                child: Text('Update'),
+                              )
+                      ],
+                    ),
+                  ),
+                ]),
+                error != null ? ErrorWindow() : SizedBox(),
               ],
-            ),
-          ),
-        ]),
+            );
+          },
+        ),
       ),
     );
   }

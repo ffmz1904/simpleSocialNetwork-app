@@ -7,6 +7,7 @@ import 'package:redux/redux.dart';
 import 'package:ssn/actions/user_actions.dart';
 import 'package:ssn/app_state.dart';
 import 'package:ssn/models/user.dart';
+import 'package:ssn/widgets/error_window.dart';
 import 'package:ssn/widgets/nav_drawer.dart';
 import 'package:ssn/widgets/user_avatar.dart';
 
@@ -74,41 +75,52 @@ class _SettingScreenState extends State<SettingScreen> {
         onTap: () {
           FocusScope.of(context).requestFocus(new FocusNode());
         },
-        child: StoreConnector<AppState, User>(
-          converter: (store) => store.state.user['data'],
-          builder: (context, user) {
-            return Container(
-              margin: EdgeInsets.symmetric(vertical: 15, horizontal: 10),
-              child: ListView(
-                children: [
-                  Container(
-                    child: Column(
-                      children: [
-                        _image != null
-                            ? CircleAvatar(
-                                backgroundImage: FileImage(_image),
-                                radius: 50,
-                              )
-                            : UserAvatar(
-                                url: user.image,
-                                radius: 50,
-                              ),
-                        TextButton(
-                            onPressed: () => getImage(),
-                            child: Text('Change image')),
-                      ],
-                    ),
-                  ),
-                  _userDataForm(user.name, user.email),
-                  _userChangePassForm(),
-                  Center(
-                    child: ElevatedButton(
-                      child: Text('Save'),
-                      onPressed: () => updateProfile(store),
-                    ),
-                  ),
-                ],
-              ),
+        child: StoreConnector<AppState, String>(
+          converter: (store) => store.state.error,
+          builder: (context, error) {
+            return Stack(
+              children: [
+                StoreConnector<AppState, User>(
+                  converter: (store) => store.state.user['data'],
+                  builder: (context, user) {
+                    return Container(
+                      margin:
+                          EdgeInsets.symmetric(vertical: 15, horizontal: 10),
+                      child: ListView(
+                        children: [
+                          Container(
+                            child: Column(
+                              children: [
+                                _image != null
+                                    ? CircleAvatar(
+                                        backgroundImage: FileImage(_image),
+                                        radius: 50,
+                                      )
+                                    : UserAvatar(
+                                        url: user.image,
+                                        radius: 50,
+                                      ),
+                                TextButton(
+                                    onPressed: () => getImage(),
+                                    child: Text('Change image')),
+                              ],
+                            ),
+                          ),
+                          _userDataForm(user.name, user.email),
+                          _userChangePassForm(),
+                          Center(
+                            child: ElevatedButton(
+                              child: Text('Save'),
+                              onPressed: () => updateProfile(store),
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
+                  },
+                ),
+                error != null ? ErrorWindow() : SizedBox(),
+              ],
             );
           },
         ),

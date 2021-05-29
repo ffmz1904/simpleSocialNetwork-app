@@ -8,6 +8,7 @@ import 'package:ssn/models/comment.dart';
 import 'package:ssn/models/post.dart';
 import 'package:ssn/screens/comments_screen.dart';
 import 'package:ssn/screens/create_post_screen.dart';
+import 'package:ssn/widgets/error_window.dart';
 import 'package:ssn/widgets/nav_drawer.dart';
 
 class PostScreen extends StatefulWidget {
@@ -26,98 +27,117 @@ class _PostScreenState extends State<PostScreen> {
       appBar: AppBar(
         title: Text("SSN"),
       ),
-      body: StoreConnector<AppState, Post>(
-        converter: (store) =>
-            store.state.posts.where((post) => post.id == args.id).first,
-        builder: (context, post) {
-          return Container(
-              margin: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
-              child: ListView(children: [
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 10),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text("by " + post.userData.name),
-                      Text(
-                        '${post.updatedAt.day}.${post.updatedAt.month}.${post.updatedAt.year}',
-                        textAlign: TextAlign.end,
-                      ),
-                    ],
-                  ),
-                ),
-                Text(
-                  post.title,
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                ),
-                SizedBox(height: 10),
-                Text(
-                  post.body,
-                  style: TextStyle(fontSize: 16),
-                ),
-                Container(
-                    margin: EdgeInsets.symmetric(vertical: 5),
-                    padding: EdgeInsets.symmetric(vertical: 5),
-                    decoration: BoxDecoration(
-                        border: Border(
-                            top: BorderSide(
-                                width: 2,
-                                color:
-                                    Theme.of(context).colorScheme.background))),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        TextButton(
-                          onPressed: () => Navigator.pushNamed(
-                              context, "/comments",
-                              arguments: CommentsScreenArgs(postId: post.id)),
-                          child: Row(
-                            children: [
-                              Icon(FontAwesomeIcons.comments),
-                              SizedBox(width: 10),
-                              Text('${post.comments.length}'),
-                            ],
+      body: StoreConnector<AppState, String>(
+          converter: (store) => store.state.error,
+          builder: (context, error) {
+            return Stack(
+              children: [
+                StoreConnector<AppState, Post>(
+                  converter: (store) => store.state.posts
+                      .where((post) => post.id == args.id)
+                      .first,
+                  builder: (context, post) {
+                    return Container(
+                        margin:
+                            EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+                        child: ListView(children: [
+                          Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 10),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text("by " + post.userData.name),
+                                Text(
+                                  '${post.updatedAt.day}.${post.updatedAt.month}.${post.updatedAt.year}',
+                                  textAlign: TextAlign.end,
+                                ),
+                              ],
+                            ),
                           ),
-                        ),
-                        StoreConnector<AppState, Map<String, dynamic>>(
-                          converter: (store) => store.state.user,
-                          builder: (context, authUser) {
-                            if (authUser['isAuth'] &&
-                                authUser['data'].id == post.userId) {
-                              return Row(
+                          Text(
+                            post.title,
+                            style: TextStyle(
+                                fontSize: 18, fontWeight: FontWeight.bold),
+                          ),
+                          SizedBox(height: 10),
+                          Text(
+                            post.body,
+                            style: TextStyle(fontSize: 16),
+                          ),
+                          Container(
+                              margin: EdgeInsets.symmetric(vertical: 5),
+                              padding: EdgeInsets.symmetric(vertical: 5),
+                              decoration: BoxDecoration(
+                                  border: Border(
+                                      top: BorderSide(
+                                          width: 2,
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .background))),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
-                                  IconButton(
-                                    icon: Icon(FontAwesomeIcons.edit),
-                                    iconSize: 16,
-                                    color: Colors.blueAccent,
+                                  TextButton(
                                     onPressed: () => Navigator.pushNamed(
-                                        context, "/create_post",
-                                        arguments:
-                                            CreatePostScreenArgs(post: post)),
+                                        context, "/comments",
+                                        arguments: CommentsScreenArgs(
+                                            postId: post.id)),
+                                    child: Row(
+                                      children: [
+                                        Icon(FontAwesomeIcons.comments),
+                                        SizedBox(width: 10),
+                                        Text('${post.comments.length}'),
+                                      ],
+                                    ),
                                   ),
-                                  IconButton(
-                                    icon: Icon(FontAwesomeIcons.trashAlt),
-                                    iconSize: 16,
-                                    color: Colors.redAccent,
-                                    onPressed: () {
-                                      Function remove =
-                                          removePostAction(post.id);
-                                      store.dispatch(remove(store));
-                                      Navigator.pop(context);
+                                  StoreConnector<AppState,
+                                      Map<String, dynamic>>(
+                                    converter: (store) => store.state.user,
+                                    builder: (context, authUser) {
+                                      if (authUser['isAuth'] &&
+                                          authUser['data'].id == post.userId) {
+                                        return Row(
+                                          children: [
+                                            IconButton(
+                                              icon: Icon(FontAwesomeIcons.edit),
+                                              iconSize: 16,
+                                              color: Colors.blueAccent,
+                                              onPressed: () =>
+                                                  Navigator.pushNamed(
+                                                      context, "/create_post",
+                                                      arguments:
+                                                          CreatePostScreenArgs(
+                                                              post: post)),
+                                            ),
+                                            IconButton(
+                                              icon: Icon(
+                                                  FontAwesomeIcons.trashAlt),
+                                              iconSize: 16,
+                                              color: Colors.redAccent,
+                                              onPressed: () {
+                                                Function remove =
+                                                    removePostAction(post.id);
+                                                store.dispatch(remove(store));
+                                                Navigator.pop(context);
+                                              },
+                                            ),
+                                          ],
+                                        );
+                                      }
+
+                                      return SizedBox();
                                     },
                                   ),
                                 ],
-                              );
-                            }
-
-                            return SizedBox();
-                          },
-                        ),
-                      ],
-                    ))
-              ]));
-        },
-      ),
+                              ))
+                        ]));
+                  },
+                ),
+                error != null ? ErrorWindow() : SizedBox(),
+              ],
+            );
+          }),
     );
   }
 }

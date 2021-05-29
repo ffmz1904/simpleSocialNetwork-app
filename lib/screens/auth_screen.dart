@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
+import 'package:ssn/actions/error_action.dart';
 import 'package:ssn/actions/user_actions.dart';
 import 'package:ssn/api/user_api.dart';
 import 'package:ssn/app_state.dart';
+import 'package:ssn/widgets/error_window.dart';
 
 class AuthScreen extends StatefulWidget {
   @override
@@ -23,10 +25,12 @@ class _AuthScreenState extends State<AuthScreen> {
       Function login = userLogin(email.text, password.text, context);
       store.dispatch(login(store));
     } else {
-      final result =
-          await UserApi.registration(name.text, email.text, password.text);
-      if (result['success']) {
-        Navigator.pushNamed(context, "/auth");
+      if (password.text == confirmPassword.text) {
+        Function register = userRegisterAction(name.text, email.text,
+            password.text, () => Navigator.pushNamed(context, "/auth"));
+        store.dispatch(register(store));
+      } else {
+        store.dispatch(SetError(message: 'Password not confirmed!'));
       }
     }
   }
@@ -38,34 +42,43 @@ class _AuthScreenState extends State<AuthScreen> {
         onTap: () {
           FocusScope.of(context).requestFocus(new FocusNode());
         },
-        child: ListView(children: [
-          Container(
-            height: MediaQuery.of(context).size.height,
-            padding: EdgeInsets.only(top: 30, bottom: 20),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                IconButton(
-                  icon: Icon(Icons.arrow_back),
-                  onPressed: () => Navigator.pushNamed(context, "/"),
-                  color: Theme.of(context).accentColor,
-                ),
-                isLogin ? _loginForm() : _registerForm(),
-                Center(
-                  child: TextButton(
-                    onPressed: setIsLogin,
-                    child: isLogin
-                        ? Text(
-                            "No acount? Register!",
-                          )
-                        : Text("Already have an account? Sign in!"),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ]),
+        child: StoreConnector<AppState, String>(
+            converter: (store) => store.state.error,
+            builder: (context, error) {
+              return Stack(
+                children: [
+                  ListView(children: [
+                    Container(
+                      height: MediaQuery.of(context).size.height,
+                      padding: EdgeInsets.only(top: 30, bottom: 20),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          IconButton(
+                            icon: Icon(Icons.arrow_back),
+                            onPressed: () => Navigator.pushNamed(context, "/"),
+                            color: Theme.of(context).accentColor,
+                          ),
+                          isLogin ? _loginForm() : _registerForm(),
+                          Center(
+                            child: TextButton(
+                              onPressed: setIsLogin,
+                              child: isLogin
+                                  ? Text(
+                                      "No acount? Register!",
+                                    )
+                                  : Text("Already have an account? Sign in!"),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ]),
+                  error != null ? ErrorWindow() : SizedBox(),
+                ],
+              );
+            }),
       ),
     );
   }

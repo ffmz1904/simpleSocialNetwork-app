@@ -16,7 +16,7 @@ import 'package:ssn/screens/setting_screen.dart';
 
 class App extends StatelessWidget {
   final Store appStore;
-  Function verifyToken = checkAuthAction();
+  final Function verifyToken = checkAuthAction();
   App({this.appStore});
 
   @override

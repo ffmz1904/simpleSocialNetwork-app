@@ -4,6 +4,7 @@ import 'package:redux/redux.dart';
 import 'package:ssn/actions/post_actions.dart';
 import 'package:ssn/app_state.dart';
 import 'package:ssn/models/post.dart';
+import 'package:ssn/widgets/error_window.dart';
 import 'package:ssn/widgets/nav_drawer.dart';
 import 'package:ssn/widgets/posts_list.dart';
 
@@ -30,16 +31,26 @@ class _HomeScreenState extends State<HomeScreen> {
       appBar: AppBar(
         title: Text("SSN"),
       ),
-      body: StoreConnector<AppState, List<Post>>(
-          converter: (store) => store.state.posts,
-          builder: (context, posts) {
-            if (loading) {
-              return Center(
-                child: CircularProgressIndicator(),
-              );
-            }
-            return PostsList(posts: posts);
-          }),
+      body: StoreConnector<AppState, String>(
+        converter: (store) => store.state.error,
+        builder: (context, error) {
+          return Stack(
+            children: [
+              StoreConnector<AppState, List<Post>>(
+                  converter: (store) => store.state.posts,
+                  builder: (context, posts) {
+                    if (loading) {
+                      return Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    }
+                    return PostsList(posts: posts);
+                  }),
+              error != null ? ErrorWindow() : SizedBox(),
+            ],
+          );
+        },
+      ),
     );
   }
 }
