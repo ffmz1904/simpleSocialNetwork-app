@@ -54,4 +54,10 @@ class UserApi {
             .request();
     return response;
   }
+
+  static Future updateUserProfile(updateData) async {
+    Map response = await Api.put(endpoint: apiBaseUri, formData: updateData)
+        .formDataRequest();
+    return response;
+  }
 }

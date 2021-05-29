@@ -5,6 +5,7 @@ Reducer<Map<String, dynamic>> userReducer = combineReducers([
   TypedReducer<Map<String, dynamic>, SetUserData>(setUserData),
   TypedReducer<Map<String, dynamic>, RemoveUserData>(removeUserData),
   TypedReducer<Map<String, dynamic>, UpdateUserFriends>(updateFriendsList),
+  TypedReducer<Map<String, dynamic>, UpdateUserProfile>(updateUserProfile),
 ]);
 
 Map<String, dynamic> setUserData(
@@ -29,4 +30,9 @@ Map<String, dynamic> updateFriendsList(
     'isAuth': user['isAuth'],
     'data': action.user,
   };
+}
+
+Map<String, dynamic> updateUserProfile(
+    Map<String, dynamic> user, UpdateUserProfile action) {
+  return {'isAuth': user['isAuth'], 'data': action.user};
 }

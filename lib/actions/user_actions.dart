@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:http/http.dart';
 import 'package:redux/redux.dart';
 import 'package:redux_thunk/redux_thunk.dart';
 import 'package:ssn/api/user_api.dart';
@@ -19,6 +20,11 @@ class UpdateUserFriends {
   User user;
   User friend;
   UpdateUserFriends({this.user, this.friend});
+}
+
+class UpdateUserProfile {
+  User user;
+  UpdateUserProfile({this.user});
 }
 
 ThunkAction<AppState> userLogin(email, password, context) {
@@ -62,5 +68,12 @@ ThunkAction<AppState> unsubscribeAction(unsubscribeId) {
     store.dispatch(UpdateUserFriends(
         user: User.fromMap(response['user']),
         friend: User.fromMap(response['unsubscribedUser'])));
+  };
+}
+
+ThunkAction<AppState> updateProfileAction(updateData) {
+  return (Store<AppState> store) async {
+    final response = await UserApi.updateUserProfile(updateData);
+    store.dispatch(UpdateUserProfile(user: User.fromMap(response['user'])));
   };
 }
