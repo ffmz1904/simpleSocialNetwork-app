@@ -26,9 +26,8 @@ class _SettingScreenState extends State<SettingScreen> {
   File _image;
   final picker = ImagePicker();
 
-  Future getImage(type) async {
-    final pickedFile = await picker.getImage(
-        source: type == 'camera' ? ImageSource.camera : ImageSource.gallery);
+  Future getImage() async {
+    final pickedFile = await picker.getImage(source: ImageSource.gallery);
 
     setState(() {
       if (pickedFile != null) {
@@ -102,13 +101,7 @@ class _SettingScreenState extends State<SettingScreen> {
                                         radius: 50,
                                       ),
                                 TextButton(
-                                    onPressed: () {
-                                      showDialog(
-                                        context: context,
-                                        builder: (context) =>
-                                            _buildPopupDialog(context),
-                                      );
-                                    },
+                                    onPressed: () => getImage(),
                                     child: Text('Change image')),
                               ],
                             ),
@@ -189,42 +182,6 @@ class _SettingScreenState extends State<SettingScreen> {
           _input(_oldPass, 'Old password ...', true),
         ],
       ),
-    );
-  }
-
-  Widget _buildPopupDialog(BuildContext context) {
-    return new AlertDialog(
-      title: const Text(
-        'Get image from:',
-        textAlign: TextAlign.center,
-      ),
-      content: new Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: <Widget>[
-          TextButton(
-              onPressed: () => getImage('camera'),
-              child: Text(
-                'Camera',
-                style: TextStyle(fontSize: 20),
-              )),
-          TextButton(
-            onPressed: () => getImage('galery'),
-            child: Text(
-              'Galery',
-              style: TextStyle(fontSize: 20),
-            ),
-          ),
-        ],
-      ),
-      actions: <Widget>[
-        new ElevatedButton(
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-          child: const Text('Close'),
-        ),
-      ],
     );
   }
 }
