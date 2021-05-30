@@ -65,7 +65,7 @@ ThunkAction<AppState> checkAuthAction() {
   return (Store<AppState> store) async {
     final response = await UserApi.checkAuth();
 
-    if (response['success']) {
+    if (response['success'] != null) {
       TokenHandler.setToken(response['token']);
       return store.dispatch(SetUserData(
           data: {"user": User.fromMap(response['user']), "isAuth": true}));

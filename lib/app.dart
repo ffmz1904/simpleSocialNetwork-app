@@ -26,6 +26,7 @@ class App extends StatelessWidget {
     return StoreProvider<AppState>(
       store: appStore,
       child: MaterialApp(
+        debugShowCheckedModeBanner: false,
         title: "SSN",
         initialRoute: "/",
         routes: {

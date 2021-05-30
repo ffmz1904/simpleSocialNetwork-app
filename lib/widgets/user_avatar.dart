@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ssn/constants.dart';
 
 class UserAvatar extends StatelessWidget {
   final double radius;
@@ -13,7 +14,7 @@ class UserAvatar extends StatelessWidget {
   Widget build(BuildContext context) {
     return CircleAvatar(
       radius: radius,
-      backgroundImage: NetworkImage('http://10.0.2.2:4000/' + url),
+      backgroundImage: NetworkImage(SERVER_URL + url),
     );
   }
 }

@@ -3,6 +3,8 @@ import 'package:dio/dio.dart';
 import 'package:http/http.dart' as http;
 import 'package:ssn/helpers/token_handler.dart';
 
+import '../constants.dart';
+
 enum RequestMethod {
   GET,
   POST,
@@ -12,7 +14,8 @@ enum RequestMethod {
 }
 
 class Api {
-  final String serverUri = "http://10.0.2.2:4000/";
+  final String serverUri = SERVER_URL;
+
   String endpoint;
   Map<String, dynamic> body = {};
   FormData formData;
